@@ -8,16 +8,13 @@ variable "aws_region" {
   default     = "ap-south-1"
 }
 
-# CONCEPT: Map Variable for for_each
-# This map defines our production instances. 
-# We can easily add or remove instances by modifying this map.
+# CONCEPT: Map Variable for for_each (Dev Environment)
+# In development, we scale down to a single instance to save costs.
 variable "instance_config" {
   description = "Map of instance names to their specific configurations"
   type        = map(any)
   default = {
-    "web-server-1" = { instance_type = "t3.micro" }
-    "web-server-2" = { instance_type = "t3.micro" }
-    "web-server-3" = { instance_type = "t3.micro" }
+    "dev-server" = { instance_type = "t3.micro" }
   }
 }
 
