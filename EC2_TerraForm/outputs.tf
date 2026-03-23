@@ -2,21 +2,16 @@
 # OUTPUTS - Exporting Resource Information
 ################################################################################
 
-# CONCEPT: Outputs
-# Use outputs to retrieve information about the resources you've created. 
-# This is useful for connecting other parts of your infrastructure.
+# CONCEPT: Output with for_each
+# Since we now have multiple instances, we use a loop to return information for all of them.
 
-output "instance_id" {
-  description = "The unique ID assigned by AWS to the EC2 instance."
-  value       = aws_instance.web_server.id
-}
-
-output "ec2_public_ip" {
-  description = "The public IP address to access the web server over the internet."
-  value       = aws_instance.web_server.public_ip
-}
-
-output "ec2_public_dns" {
-  description = "The auto-generated AWS DNS name for the public IP."
-  value       = aws_instance.web_server.public_dns
+output "instance_details" {
+  description = "Map of instance names to their details"
+  value = {
+    for name, instance in aws_instance.web_server : name => {
+      id        = instance.id
+      public_ip = instance.public_ip
+      dns       = instance.public_dns
+    }
+  }
 }

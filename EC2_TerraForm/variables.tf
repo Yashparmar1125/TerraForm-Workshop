@@ -2,25 +2,29 @@
 # VARIABLES - Input Parameters
 ################################################################################
 
-# CONCEPT: Input Variables
-# Variables allow you to customize your configuration without editing the main code.
-
 variable "aws_region" {
   description = "The AWS region where resources will be created. Mumbai (ap-south-1) is used by default."
   type        = string
   default     = "ap-south-1"
 }
 
-variable "instance_type" {
-  description = "The size of the virtual machine. t3.micro is usually eligible for Free Tier."
-  type        = string
-  default     = "t3.micro"
+# CONCEPT: Map Variable for for_each
+# This map defines our production instances. 
+# We can easily add or remove instances by modifying this map.
+variable "instance_config" {
+  description = "Map of instance names to their specific configurations"
+  type        = map(any)
+  default = {
+    "web-server-1" = { instance_type = "t3.micro" }
+    "web-server-2" = { instance_type = "t3.micro" }
+    "web-server-3" = { instance_type = "t3.micro" }
+  }
 }
 
 variable "my_ip" {
   description = "Your public IP address. Used to restrict SSH access to ONLY your machine."
   type        = string
-  default     = "0.0.0.0/0" # WARNING: This allows SSH from anywhere. Update with your real IP for security.
+  default     = "0.0.0.0/0"
 }
 
 variable "project_name" {
