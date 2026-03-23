@@ -1,27 +1,27 @@
-# 🎓 Workshop: Deploying a Scalable Web Server with EC2 (Development)
+# 🎓 Workshop: Deploying a Scalable Web Server with EC2 (Production)
 
-This is the **Development** version of the infrastructure, located on the `dev` branch.
+This is the **Production** version of the infrastructure, located on the `main` branch.
 
-## 🏗 Development Architecture
+## 🏗 Production Architecture
 
-- **Compute**: AWS EC2 Instance (t3.micro).
-- **Scaling**: Optimized for cost. Only **1 instance** is deployed in the development environment.
-- **Environment Tag**: `Environment = dev` (automatically applied via the `dev` terraform workspace).
+- **Compute**: AWS EC2 Instances (t3.micro).
+- **Scaling**: High Availability. **3 instances** are deployed in the production environment using `for_each`.
+- **Environment Tag**: `Environment = default` (automatically applied via the `default` terraform workspace).
 
 ## 📁 Environment-Specific Files
 
-- `variables.tf`: Contains the `instance_config` map with only 1 instance (`dev-server`).
+- `variables.tf`: Contains the `instance_config` map with 3 instances (`web-server-1`, `web-server-2`, `web-server-3`).
 - `main.tf`: Uses `for_each` and dynamic tagging based on `terraform.workspace`.
 
-## 🚀 How to Deploy Dev
+## 🚀 How to Deploy Production
 
-1. **Switch to Dev Branch**:
+1. **Switch to Main Branch**:
    ```bash
-   git checkout dev
+   git checkout main
    ```
-2. **Select/Create Dev Workspace**:
+2. **Select Default Workspace**:
    ```bash
-   terraform workspace select dev || terraform workspace new dev
+   terraform workspace select default
    ```
 3. **Apply**:
    ```bash
@@ -29,7 +29,8 @@ This is the **Development** version of the infrastructure, located on the `dev` 
    terraform apply
    ```
 
-## 💡 Key Lessons for Dev Environment
+## 💡 Key Lessons for Production Environment
 
-- **Cost Optimization**: Always scale down resources in non-production environments.
-- **Isolation**: Use Terraform Workspaces (`dev`) to ensure that your development state doesn't interfere with production.
+- **High Availability**: Always deploy multiple instances across various availability zones for better uptime.
+- **Dynamic Scaling**: Use maps and `for_each` to manage multiple instances efficiently without repeating code.
+- **Organization**: Ensure production state is kept in the `default` workspace to separate it from experimental environments.

@@ -1,6 +1,6 @@
-# 🚀 Terraform Infrastructure-as-Code (IaC) Workshop (Dev Branch)
+# 🚀 Terraform Infrastructure-as-Code (IaC) Workshop (Production Branch)
 
-This is the **Development** branch of the workshop.
+This is the **Production** branch of the workshop.
 
 ## 🎓 Branch Strategy
 
@@ -10,13 +10,13 @@ This is the **Development** branch of the workshop.
 ## 📁 Repository Structure
 
 - [Remote_Backend](./Remote_Backend): Shared state infrastructure (S3/DynamoDB).
-- [EC2_TerraForm](./EC2_TerraForm): Development EC2 configuration (scaled down).
+- [EC2_TerraForm](./EC2_TerraForm): Production EC2 configuration (scale: 3 instances).
 
-## 🚀 Dev Workflow
+## 🚀 Production Workflow
 
-1. Ensure you are on the `dev` branch.
-2. Use the `dev` terraform workspace.
-3. Use the `dev-server` instance for testing.
+1. Ensure you are on the `main` branch.
+2. Use the `default` terraform workspace.
+3. Use the 3 web servers for handling live traffic.
 
 ---
-*Switch to the `main` branch for the Production configuration.*
+*Switch to the `dev` branch for the Development configuration.*
