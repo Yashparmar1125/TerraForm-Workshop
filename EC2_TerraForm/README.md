@@ -1,46 +1,35 @@
-# 🎓 Workshop: Deploying a Scalable Web Server with EC2
+# 🎓 Workshop: Deploying a Scalable Web Server with EC2 (Development)
 
-This directory contains the Terraform configuration for deploying a secured EC2 web server using industry-standard practices.
+This is the **Development** version of the infrastructure, located on the `dev` branch.
 
-## 🏗 Architecture Overview
+## 🏗 Development Architecture
 
-- **Compute**: AWS EC2 Instance (t3.micro) running Amazon Linux 2023.
-- **Security**: Security Group acting as a virtual firewall allowing SSH (Port 22), HTTP (Port 80), and HTTPS (Port 443).
-- **Automation**: `setup.sh` script to configure the web server automatically upon boot.
-- **State Management**: Remote storage in S3 with DynamoDB locking (see `backend.tf`).
+- **Compute**: AWS EC2 Instance (t3.micro).
+- **Scaling**: Optimized for cost. Only **1 instance** is deployed in the development environment.
+- **Environment Tag**: `Environment = dev` (automatically applied via the `dev` terraform workspace).
 
-## 📁 File Structure & Concepts
+## 📁 Environment-Specific Files
 
-Each file in this workshop serves a specific purpose following the "Separation of Concerns" principle:
+- `variables.tf`: Contains the `instance_config` map with only 1 instance (`dev-server`).
+- `main.tf`: Uses `for_each` and dynamic tagging based on `terraform.workspace`.
 
-- `main.tf`: Core logic (EC2, SG, Key Pairs).
-- `variables.tf`: Input parameters to make the module reusable.
-- `outputs.tf`: Values returned after the run (IP addresses, IDs).
-- `data.tf`: Dynamic lookups for the latest AMIs and existing VPCs.
-- `providers.tf`: Global AWS provider settings and default tagging.
-- `versions.tf`: Version pinning for infrastructure reliability.
-- `backend.tf`: Configuration for remote state storage.
+## 🚀 How to Deploy Dev
 
-## 🚀 How to Use
-
-1. **Initialize**: Prepare the environment and download providers.
+1. **Switch to Dev Branch**:
+   ```bash
+   git checkout dev
+   ```
+2. **Select/Create Dev Workspace**:
+   ```bash
+   terraform workspace select dev || terraform workspace new dev
+   ```
+3. **Apply**:
    ```bash
    terraform init
-   ```
-2. **Plan**: See what changes will be made before applying them.
-   ```bash
-   terraform plan
-   ```
-3. **Apply**: Deploy the infrastructure to AWS.
-   ```bash
    terraform apply
    ```
-4. **Access**: Once deployment is complete, use the `ec2_public_ip` output to visit your server in a browser.
 
-## 💡 Key Lessons for Inudstry Alignment
+## 💡 Key Lessons for Dev Environment
 
-- **Never Hardcode Secrets**: Use variables and SSH key files.
-- **Use Dynamic Lookups**: Avoid hardcoding AMI IDs; use `data` sources instead.
-- **Default Tagging**: Use the `default_tags` feature to keep your AWS account organized.
-- **Remote State**: Store your `terraform.tfstate` in S3, not locally, for team collaboration.
-- **Encryption**: Always encrypt your root EBS volumes.
+- **Cost Optimization**: Always scale down resources in non-production environments.
+- **Isolation**: Use Terraform Workspaces (`dev`) to ensure that your development state doesn't interfere with production.
