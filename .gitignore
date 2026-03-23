@@ -31,5 +31,5 @@ terraform.rc
 
 # Ignore specific sensitive files in this project
 terraform_key
-# But keep the public key as it's part of the workshop
-!terraform_key.pub
+terraform_key.pub
+*.pub
